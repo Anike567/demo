@@ -1,6 +1,6 @@
 import { Controller, Get,Body,Res, Post } from '@nestjs/common';
-import { LoginDto } from './user_login.dto';
-import { SignupDto } from './user_signup.dto';
+import { LoginDto } from '../model/user_login.dto';
+import { SignupDto } from '../model/user_signup.dto';
 import { UserService } from './user.service';
 
 const users=[]
