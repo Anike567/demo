@@ -7,9 +7,17 @@ export class AuthService {
 
   async authenticate(username: string, userId: object) {
     const payload = { sub: userId, username };
-
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async verify(token: string) {
+    try {
+      const result = await this.jwtService.verifyAsync(token);
+      return result;
+    } catch (error) {
+      throw new Error('Invalid token');
+    }
   }
 }
