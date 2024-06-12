@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Headers, Body, Res, HttpStatus, Redirect } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from '../model/user_login.dto';
 import { SignupDto } from '../model/user_signup.dto';
@@ -9,6 +9,17 @@ export class UserController {
   constructor(
     private readonly userService: UserService
   ) {}
+
+  @Get('endpoint1')
+  async endpoint1(@Headers('authorization') authHeader: string) {
+    const validationResult = await this.userService.validate(authHeader);
+    if (validationResult) {
+      return 'hello from endpoint1';
+    }
+    return 'Not logged in, please login first';
+  }
+
+
 
   @Post('login')
   async login(@Res() res: Response, @Body() loginDto: LoginDto) {
