@@ -22,15 +22,14 @@ export class UserController {
     }
 
     @Post("login")
-    async login(@Res() res:any, @Body() logindto: LoginDto){
-
+    async login(@Body() logindto: LoginDto){
         const user=await this.userService.login(logindto)
-        console.log(user);
+        
         if(user){
-            users.push(user);
-            
-            return res.redirect('/endpoint1');
+
+            return user;
         }
+        
         return "invalid login credentials"
     }
     @Post("signup")
