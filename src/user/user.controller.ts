@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Headers, Body, Res, HttpStatus, Redirect } from '@nestjs/common';
+import { Controller, Get, Post, Headers, Body, Res, HttpStatus, Redirect, Delete, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from '../model/user_login.dto';
 import { SignupDto } from '../model/user_signup.dto';
 import { Response } from 'express';
+import { DeleteService } from './delete/delete.service';
 
 @Controller('user')
 export class UserController {
   constructor(
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly deleteService: DeleteService
   ) {}
 
   @Get('endpoint1')
@@ -34,5 +36,24 @@ export class UserController {
   @Post('signup')
   async signup(@Body() signupDto: SignupDto) {
     return this.userService.create(signupDto);
+  }
+
+  @Delete()
+  async delete(@Headers('authorization') authHeader:string , @Body() body){
+    const validationResult=await this.userService.validate(authHeader);
+
+    if(validationResult !== undefined){
+      if(validationResult.role === 'admin') {
+        const {username}=body;
+        return await this.deleteService.delete(username);
+      }
+      else{
+        return "Not authorized for this operation";
+      }
+
+    }
+
+    return "forbidden";
+
   }
 }

@@ -17,7 +17,7 @@ export class UserService {
         const { username, password } = loginDto;
         const user = await this.userModel.findOne({ username }).exec();
         if (user && user.password === password) {
-            const token = await this.authService.authenticate(user.username, user._id);
+            const token = await this.authService.authenticate(user.username, user._id,user.role);
             return {
                 user,
                 token,
