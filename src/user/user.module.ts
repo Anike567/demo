@@ -6,6 +6,7 @@ import { User, UserSchema } from '../model/user.shema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module'; 
 import { DeleteService } from './delete/delete.service';
+import { GetUserService } from './getalluser.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { DeleteService } from './delete/delete.service';
     AuthModule,
   ],
   controllers: [UserController],
-  providers: [UserService,DeleteService], 
+  providers: [UserService,DeleteService,GetUserService], 
 })
 export class UserModule {}

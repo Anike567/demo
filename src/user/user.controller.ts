@@ -4,13 +4,16 @@ import { LoginDto } from '../model/user_login.dto';
 import { SignupDto } from '../model/user_signup.dto';
 import { Response } from 'express';
 import { DeleteService } from './delete/delete.service';
+import { GetUserService } from './getalluser.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly deleteService: DeleteService
-  ) {}
+    private readonly deleteService: DeleteService,
+    private readonly getUserservice: GetUserService
+
+  ) { }
 
   @Get('endpoint1')
   async endpoint1(@Headers('authorization') authHeader: string) {
@@ -39,21 +42,29 @@ export class UserController {
   }
 
   @Delete()
-  async delete(@Headers('authorization') authHeader:string , @Body() body){
-    const validationResult=await this.userService.validate(authHeader);
+  async delete(@Headers('authorization') authHeader: string, @Body() body) {
+    const validationResult = await this.userService.validate(authHeader);
 
-    if(validationResult !== undefined){
-      if(validationResult.role === 'admin') {
-        const {username}=body;
+    if (validationResult !== undefined) {
+      if (validationResult.role === 'admin') {
+        const { username } = body;
         return await this.deleteService.delete(username);
       }
-      else{
+      else {
         return "Not authorized for this operation";
       }
 
     }
 
     return "forbidden";
+
+  }
+
+  @Get('getusers')
+  async getUser(@Headers('authorization') authHeader: string, @Body() body) {
+    console.log(body);
+    const { offset, limit } = body
+    return this.getUserservice.getUsers(offset, limit, authHeader);
 
   }
 }
