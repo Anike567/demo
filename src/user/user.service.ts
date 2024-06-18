@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Collection, Model } from 'mongoose';
 import { User } from '../model/user.shema';
 import { SignupDto } from '../model/user_signup.dto';
 import { LoginDto } from '../model/user_login.dto';
@@ -31,6 +31,7 @@ export class UserService {
         const newUser = new this.userModel({ name, username, email, password });
         return newUser.save();
     }
+
 
     async validate(token: string) {
         if (token) {
