@@ -27,8 +27,8 @@ export class UserService {
     }
 
     async create(arg: SignupDto): Promise<User> {
-        const { name, username, email, password } = arg;
-        const newUser = new this.userModel({ name, username, email, password });
+        const { name, username, email, password, role } = arg;
+        const newUser = new this.userModel({ name, username, email, password, role});
         return newUser.save();
     }
 

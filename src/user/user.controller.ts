@@ -38,6 +38,7 @@ export class UserController {
 
   @Post('signup')
   async signup(@Body() signupDto: SignupDto) {
+    console.log(signupDto);
     return this.userService.create(signupDto);
   }
 
@@ -50,9 +51,8 @@ export class UserController {
         const { username } = body;
         return await this.deleteService.delete(username);
       }
-      else {
-        return "Not authorized for this operation";
-      }
+      return "forbidden";
+
 
     }
 
