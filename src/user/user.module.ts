@@ -1,5 +1,5 @@
 // user.module.ts
-import { Module } from '@nestjs/common';
+import { Module, UseGuards } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { User, UserSchema } from '../model/user.shema';
@@ -15,5 +15,6 @@ import { GetUserService } from './getalluser.service';
   ],
   controllers: [UserController],
   providers: [UserService,DeleteService,GetUserService], 
+
 })
 export class UserModule {}

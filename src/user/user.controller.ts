@@ -5,6 +5,7 @@ import { SignupDto } from '../model/user_signup.dto';
 import { Response } from 'express';
 import { DeleteService } from './delete/delete.service';
 import { GetUserService } from './getalluser.service';
+import { Roles } from 'src/decorator/role.decorator';
 
 @Controller('user')
 export class UserController {
@@ -43,26 +44,15 @@ export class UserController {
   }
 
   @Delete()
+  @Roles(['admin'])
   async delete(@Headers('authorization') authHeader: string, @Body() body) {
-    const validationResult = await this.userService.validate(authHeader);
-
-    if (validationResult !== undefined) {
-      if (validationResult.role === 'admin') {
-        const { username } = body;
-        return await this.deleteService.delete(username);
-      }
-      return "forbidden";
-
-
-    }
-
-    return "forbidden";
-
+    const {username}=body;
+    return await this.deleteService.delete(username);
+      
   }
 
   @Get('getusers')
   async getUser(@Headers('authorization') authHeader: string, @Body() body) {
-    console.log(body);
     const { offset, limit } = body
     return this.getUserservice.getUsers(offset, limit, authHeader);
 
